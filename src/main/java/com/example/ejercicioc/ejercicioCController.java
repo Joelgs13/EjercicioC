@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import model.Persona;
 
 /**
@@ -12,6 +13,12 @@ import model.Persona;
  * Permite agregar personas a una tabla después de validar los datos.
  */
 public class ejercicioCController {
+
+    @FXML
+    private Button btn_modificar;
+
+    @FXML
+    private Button agregarButton;
 
     @FXML
     private TextField nombreField;
@@ -57,7 +64,10 @@ public class ejercicioCController {
      * Si la persona se agrega correctamente, muestra un mensaje de éxito.
      */
     @FXML
-    private void agregar() {
+    private void agregar(ActionEvent event) {
+        // Obtener la persona seleccionada (si existe)
+        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
+
         String nombre = nombreField.getText().trim();
         String apellidos = apellidosField.getText().trim();
         String edadText = edadField.getText().trim();
@@ -81,23 +91,48 @@ public class ejercicioCController {
             errores.append("El campo 'Edad' debe ser un número entero válido.\n");
         }
 
-
+        // Si hay errores, mostrar error
         if (errores.length() > 0) {
             mostrarError(errores.toString());
             return;
         }
 
-
+        // Crear una nueva persona con los datos ingresados
         Persona nuevaPersona = new Persona(nombre, apellidos, edad);
 
-        if (personasList.contains(nuevaPersona)) {
-            mostrarError("Persona duplicada: Ya existe una persona con los mismos datos.");
-            return;
+        // Verificar que la persona no sea duplicada (excepto la persona seleccionada en el caso de modificar)
+        for (Persona persona : personasList) {
+            if (!persona.equals(personaSeleccionada) && persona.equals(nuevaPersona)) {
+                mostrarError("Persona duplicada: Ya existe una persona con los mismos datos.");
+                return;
+            }
         }
 
-        personasList.add(nuevaPersona);
-        mostrarInformacion("Persona agregada con éxito.");
+        // Si hay una persona seleccionada y se pulsa modificar
+        if (personaSeleccionada != null && event.getSource()==btn_modificar) {
+            personaSeleccionada.setNombre(nombre);
+            personaSeleccionada.setApellido(apellidos);
+            personaSeleccionada.setEdad(edad);
+            personTable.refresh(); // Actualizamos la tabla con los cambios
+            mostrarInformacion("Persona modificada con éxito.");
+        } else if (personaSeleccionada == null && event.getSource()==agregarButton){
+            // Si no hay persona seleccionada y se pulsa agregar
+            personasList.add(nuevaPersona);
+            mostrarInformacion("Persona agregada con éxito.");
+        }
+
+        // Limpiar los campos después de agregar o modificar
+        limpiarCampos();
     }
+
+    // Método para limpiar los campos después de agregar o modificar
+    private void limpiarCampos() {
+        nombreField.clear();
+        apellidosField.clear();
+        edadField.clear();
+        personTable.getSelectionModel().clearSelection();
+    }
+
 
     /**
      * Muestra un mensaje de error en una alerta emergente con los datos recogidos por el anterior metodo.
@@ -125,11 +160,17 @@ public class ejercicioCController {
         alert.showAndWait();
     }
 
-    public void modificar(ActionEvent actionEvent) {
-
-    }
 
     public void eliminar(ActionEvent actionEvent) {
 
+    }
+
+    public void rellenar_campos(MouseEvent mouseEvent) {
+        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
+        if (personaSeleccionada!=null) {
+            nombreField.setText(personaSeleccionada.getNombre());
+            apellidosField.setText(personaSeleccionada.getApellido());
+            edadField.setText(String.valueOf(personaSeleccionada.getEdad()));
+        }
     }
 }

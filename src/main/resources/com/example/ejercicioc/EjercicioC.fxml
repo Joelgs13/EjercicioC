@@ -64,7 +64,7 @@
         </VBox>
         <VBox prefHeight="420.0" prefWidth="526.0">
             <children>
-                <TableView fx:id="personTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="424.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="personTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#rellenar_campos" prefHeight="0.0" prefWidth="424.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="nombreColumn" prefWidth="177.60000610351562" text="Nombre" />
                         <TableColumn fx:id="apellidosColumn" prefWidth="133.0" text="Apellidos" />
@@ -76,7 +76,7 @@
                 </TableView>
             <HBox alignment="CENTER" prefHeight="54.0" prefWidth="424.0" spacing="50.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <Button mnemonicParsing="false" onAction="#modificar" text="Modificar" />
+                  <Button fx:id="btn_modificar" mnemonicParsing="false" onAction="#agregar" text="Modificar" />
                   <Button mnemonicParsing="false" onAction="#eliminar" text="Eliminar" />
                </children>
             </HBox>
