@@ -2,6 +2,7 @@ package com.example.ejercicioc;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.Persona;
@@ -11,9 +12,6 @@ import model.Persona;
  * Permite agregar personas a una tabla después de validar los datos.
  */
 public class ejercicioCController {
-
-    @FXML
-    private Button agregarButton;
 
     @FXML
     private TextField nombreField;
@@ -125,5 +123,13 @@ public class ejercicioCController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    public void modificar(ActionEvent actionEvent) {
+
+    }
+
+    public void eliminar(ActionEvent actionEvent) {
+
     }
 }
