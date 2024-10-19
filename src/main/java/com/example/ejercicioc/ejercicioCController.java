@@ -9,8 +9,8 @@ import javafx.scene.input.MouseEvent;
 import model.Persona;
 
 /**
- * Controlador para la vista del ejercicio B que gestiona una lista de personas.
- * Permite agregar personas a una tabla después de validar los datos.
+ * Controlador para la vista del ejercicio C que gestiona una lista de personas.
+ * Permite agregar, modificar y eliminar personas en una tabla, después de validar los datos.
  */
 public class ejercicioCController {
 
@@ -44,12 +44,11 @@ public class ejercicioCController {
     private ObservableList<Persona> personasList = FXCollections.observableArrayList();
 
     /**
-     * Inicializa la vista, lo que hace es vincular las columnas de la tabla con los datos de las personas, haciendo que cada variable sea correspondiente mas tarde a valores que
-     * introduciremos en los textfields
+     * Inicializa la vista y vincula las columnas de la tabla con los datos de las personas.
+     * Hace que cada columna de la tabla se corresponda con los valores de los campos de texto.
      */
     @FXML
     public void initialize() {
-
         nombreColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
         apellidosColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
         edadColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getEdad()).asObject());
@@ -58,10 +57,12 @@ public class ejercicioCController {
     }
 
     /**
-     * Agrega una nueva persona a la lista y la muestra en la tabla solo si los datos son válidos
-     * y la persona no existe ya en ella.
-     * Si los datos son incorrectos o la persona ya existe, muestra un mensaje de error.
-     * Si la persona se agrega correctamente, muestra un mensaje de éxito.
+     * Agrega o modifica una persona en la tabla, dependiendo de si hay una persona seleccionada
+     * y cuál botón fue presionado (Agregar o Modificar). Si no hay persona seleccionada y se
+     * presiona "Agregar", se agrega una nueva persona. Si hay persona seleccionada y se presiona
+     * "Modificar", se modifican sus datos.
+     *
+     * @param event Evento disparado por los botones Agregar o Modificar.
      */
     @FXML
     private void agregar(ActionEvent event) {
@@ -109,13 +110,13 @@ public class ejercicioCController {
         }
 
         // Si hay una persona seleccionada y se pulsa modificar
-        if (personaSeleccionada != null && event.getSource()==btn_modificar) {
+        if (personaSeleccionada != null && event.getSource() == btn_modificar) {
             personaSeleccionada.setNombre(nombre);
             personaSeleccionada.setApellido(apellidos);
             personaSeleccionada.setEdad(edad);
             personTable.refresh(); // Actualizamos la tabla con los cambios
             mostrarInformacion("Persona modificada con éxito.");
-        } else if (personaSeleccionada == null && event.getSource()==agregarButton){
+        } else if (personaSeleccionada == null && event.getSource() == agregarButton) {
             // Si no hay persona seleccionada y se pulsa agregar
             personasList.add(nuevaPersona);
             mostrarInformacion("Persona agregada con éxito.");
@@ -125,7 +126,52 @@ public class ejercicioCController {
         limpiarCampos();
     }
 
-    // Método para limpiar los campos después de agregar eliminar o modificar
+    /**
+     * Elimina la persona seleccionada de la tabla. Si no hay persona seleccionada,
+     * muestra un mensaje de error. Después de eliminar, limpia los campos del formulario.
+     *
+     * @param actionEvent Evento disparado por el botón Eliminar.
+     */
+    @FXML
+    public void eliminar(ActionEvent actionEvent) {
+        // Obtener la persona seleccionada en la tabla
+        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
+
+        // Verificar si hay una persona seleccionada
+        if (personaSeleccionada == null) {
+            mostrarError("Debe seleccionar una persona para eliminar.");
+            return;
+        }
+
+        // Eliminar la persona seleccionada de la lista
+        personasList.remove(personaSeleccionada);
+
+        // Mostrar mensaje de confirmación
+        mostrarInformacion("Persona eliminada con éxito.");
+
+        // Limpiar los campos y deseleccionar cualquier fila
+        limpiarCampos();
+    }
+
+    /**
+     * Rellena los campos de texto con los datos de la persona seleccionada en la tabla
+     * cuando se hace clic en una fila. Si no hay persona seleccionada, no hace nada.
+     *
+     * @param mouseEvent Evento de clic en la tabla.
+     */
+    public void rellenar_campos(MouseEvent mouseEvent) {
+        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
+        if (personaSeleccionada != null) {
+            nombreField.setText(personaSeleccionada.getNombre());
+            apellidosField.setText(personaSeleccionada.getApellido());
+            edadField.setText(String.valueOf(personaSeleccionada.getEdad()));
+        }
+    }
+
+    /**
+     * Limpia los campos de texto del formulario y deselecciona cualquier fila de la tabla.
+     * Se llama después de agregar, modificar o eliminar una persona.
+     */
     private void limpiarCampos() {
         nombreField.clear();
         apellidosField.clear();
@@ -133,9 +179,8 @@ public class ejercicioCController {
         personTable.getSelectionModel().clearSelection();
     }
 
-
     /**
-     * Muestra un mensaje de error en una alerta emergente con los datos recogidos por el anterior metodo.
+     * Muestra un mensaje de error en una alerta emergente.
      *
      * @param mensaje Mensaje de error a mostrar.
      */
@@ -159,36 +204,5 @@ public class ejercicioCController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-
-    @FXML
-    public void eliminar(ActionEvent actionEvent) {
-        // Obtener la persona seleccionada en la tabla
-        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
-
-        // Verificar si hay una persona seleccionada
-        if (personaSeleccionada == null) {
-            mostrarError("Debe seleccionar una persona para eliminar.");
-            return;
-        }
-
-        // Eliminar la persona seleccionada de la lista
-        personasList.remove(personaSeleccionada);
-
-        // Mostrar mensaje de confirmación
-        mostrarInformacion("Persona eliminada con éxito.");
-
-        // Limpiar los campos y deseleccionar cualquier fila
-        limpiarCampos();
-    }
-
-
-    public void rellenar_campos(MouseEvent mouseEvent) {
-        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
-        if (personaSeleccionada!=null) {
-            nombreField.setText(personaSeleccionada.getNombre());
-            apellidosField.setText(personaSeleccionada.getApellido());
-            edadField.setText(String.valueOf(personaSeleccionada.getEdad()));
-        }
-    }
 }
+
