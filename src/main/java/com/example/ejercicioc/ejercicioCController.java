@@ -125,7 +125,7 @@ public class ejercicioCController {
         limpiarCampos();
     }
 
-    // Método para limpiar los campos después de agregar o modificar
+    // Método para limpiar los campos después de agregar eliminar o modificar
     private void limpiarCampos() {
         nombreField.clear();
         apellidosField.clear();
@@ -161,9 +161,27 @@ public class ejercicioCController {
     }
 
 
+    @FXML
     public void eliminar(ActionEvent actionEvent) {
+        // Obtener la persona seleccionada en la tabla
+        Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
 
+        // Verificar si hay una persona seleccionada
+        if (personaSeleccionada == null) {
+            mostrarError("Debe seleccionar una persona para eliminar.");
+            return;
+        }
+
+        // Eliminar la persona seleccionada de la lista
+        personasList.remove(personaSeleccionada);
+
+        // Mostrar mensaje de confirmación
+        mostrarInformacion("Persona eliminada con éxito.");
+
+        // Limpiar los campos y deseleccionar cualquier fila
+        limpiarCampos();
     }
+
 
     public void rellenar_campos(MouseEvent mouseEvent) {
         Persona personaSeleccionada = personTable.getSelectionModel().getSelectedItem();
