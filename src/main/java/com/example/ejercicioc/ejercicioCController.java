@@ -14,32 +14,69 @@ import model.Persona;
  */
 public class ejercicioCController {
 
+
+    /**
+     * El botón que permite modificar los datos de una persona seleccionada en la tabla.
+     */
     @FXML
     private Button btn_modificar;
 
+
+    /**
+     * El botón que permite agregar una nueva persona a la lista.
+     */
     @FXML
     private Button agregarButton;
 
+
+    /**
+     * El campo de texto que permite al usuario ingresar el nombre de una persona.
+     */
     @FXML
     private TextField nombreField;
 
+
+    /**
+     * El campo de texto que permite al usuario ingresar los apellidos de una persona.
+     */
     @FXML
     private TextField apellidosField;
 
+
+    /**
+     * El campo de texto que permite al usuario ingresar la edad de una persona.
+     */
     @FXML
     private TextField edadField;
 
+
+    /**
+     * La tabla que muestra las personas en la interfaz de usuario.
+     */
     @FXML
     private TableView<Persona> personTable;
 
+
+    /**
+     * La columna que muestra el nombre de cada persona en la tabla.
+     */
     @FXML
     private TableColumn<Persona, String> nombreColumn;
 
+
+    /**
+     * La columna que muestra los apellidos de cada persona en la tabla.
+     */
     @FXML
     private TableColumn<Persona, String> apellidosColumn;
 
+
+    /**
+     * La columna que muestra la edad de cada persona en la tabla.
+     */
     @FXML
     private TableColumn<Persona, Integer> edadColumn;
+
 
     private ObservableList<Persona> personasList = FXCollections.observableArrayList();
 
