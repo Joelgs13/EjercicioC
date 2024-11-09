@@ -38,6 +38,7 @@ public class EjercicioCApp extends Application {
         stage.show();
     }
 
+
     /**
      * El METODO `main` es el punto de entrada estándar para ejecutar la aplicación.
      * Llama al METODO `launch`, que inicia el ciclo de vida de la aplicación JavaFX.
