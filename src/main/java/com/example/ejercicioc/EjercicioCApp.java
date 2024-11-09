@@ -13,7 +13,7 @@ import java.io.IOException;
  * Se encarga de cargar y mostrar la interfaz de usuario definida en el archivo FXML "EjercicioC.fxml".
  * También configura la ventana principal de la aplicación, incluyendo el icono de la ventana y los tamaños máximo, mínimo y título.
  */
-public class HelloApplication extends Application {
+public class EjercicioCApp extends Application {
 
     /**
      * El METODO `start` es el punto de entrada para la ejecución de la aplicación JavaFX.
@@ -26,7 +26,7 @@ public class HelloApplication extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EjercicioC.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(EjercicioCApp.class.getResource("EjercicioC.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 500);
         Image icon = new Image(getClass().getResourceAsStream("/iconos/cuaderno.png"));
         stage.getIcons().add(icon);
